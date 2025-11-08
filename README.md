@@ -20,7 +20,7 @@ With a **clean, minimal, and professional design**, Relixor prioritizes **speed,
 
 ---
 
-## 🎨 Branding
+## 🎨 Branding.
 
 - **Theme:** Clean / Minimal / Professional  
 - **Accent Color:** Purple (#8000FF)  
