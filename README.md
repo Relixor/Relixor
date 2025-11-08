@@ -2,7 +2,7 @@
   <img src="1759488812493.png" width="200" />
 </p>
 
-# 🚀 Relixor – Extensions Unleashed
+# 🚀 Relixorb – Extensions Unleashed
 
 Relixor is a custom Android browser based on **Kiwi Browser (Chromium)**, designed for power users who want **full Chrome desktop extension support** on mobile.  
 With a **clean, minimal, and professional design**, Relixor prioritizes **speed, privacy, and extensibility**.
@@ -20,7 +20,7 @@ With a **clean, minimal, and professional design**, Relixor prioritizes **speed,
 
 ---
 
-## 🎨 Branding
+## 🎨 Branding.
 
 - **Theme:** Clean / Minimal / Professional  
 - **Accent Color:** Purple (#8000FF)  
