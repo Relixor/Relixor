@@ -77,7 +77,7 @@ Dark Reader	✅ Works	Auto dark mode
 Tampermonkey	✅ Works	Script manager
 
 
-(More will be added soon — contribute yours via Pull Requests!)
+(More will be added soon — contribute yours via Pull Requests!!)
 
 
 ---
