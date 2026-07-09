@@ -35,7 +35,7 @@ jobs:
           echo "APK created at $(date)" >> build/out.apk
 
       - name: Upload APK as artifact
-        uses: actions/upload-artifact@v4
+        uses: actions/upload-artifact@v4.1.1
         with:
           name: relixor-apk
           path: build/out.apk
