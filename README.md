@@ -107,4 +107,4 @@ Open an Issue or create a Pull Request!
 ## 📣 License
 
 This project remains open-source, under the same license as Kiwi Browser.
-Any unofficial builds must clearly state modifications.
+Any unofficial builds must clearly state all modifications.
