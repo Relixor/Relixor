@@ -68,49 +68,43 @@ cd relixor
 
 ---
 
-🧩 Extensions Tested
+## 🧩 Extensions Tested
 
-Extension	Status	Notes
-
-uBlock Origin	✅ Works	Recommended
-Dark Reader	✅ Works	Auto dark mode
-Tampermonkey	✅ Works	Script manager
-
+| Extension | Status | Notes |
+|-----------|--------|-------|
+| uBlock Origin | ✅ Works | Recommended |
+| Dark Reader | ✅ Works | Auto dark mode |
+| Tampermonkey | ✅ Works | Script manager |
 
 (More will be added soon — contribute yours via Pull Requests!!)
 
 
 ---
 
-🤝 Contributing
+## 🤝 Contributing
 
 Want to:
 
-Suggest features?
-
-Report bugs?
-
-Add patches or preconfigured extensions?
-
+- Suggest features?
+- Report bugs?
+- Add patches or preconfigured extensions?
 
 Open an Issue or create a Pull Request!
 
 
 ---
 
-📜 Credits
+## 📜 Credits
 
-Kiwi Browser Team – Base source code
-
-Chromium Project – Rendering engine
-
-Community Contributors – Extensions & patches
+- Kiwi Browser Team – Base source code
+- Chromium Project – Rendering engine
+- Community Contributors – Extensions & patches
 
 
 
 ---
 
-📣 License
+## 📣 License
 
 This project remains open-source, under the same license as Kiwi Browser.
 Any unofficial builds must clearly state modifications.
