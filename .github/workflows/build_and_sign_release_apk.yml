@@ -70,7 +70,7 @@ jobs:
       - name: On SSD - Creating symlink on /dev/disk/azure/root-part1 pointing to /dev/disk/azure/resource-part1
         run: |
           sudo ln -s /extended_data /mnt/secondary_disk
-          sudo ln -s /mnt/secondary_disk $GITHUB_WORKSPACE/
+          sudo ln -s /mnt/secondary_disk "$GITHUB_WORKSPACE/"
       # or alternatively, to work on the main partition
       # - name: On HDD - Creating symlink on /dev/disk/azure/root-part1 pointing to /dev/disk/azure/resource-part1
       #  run: |
@@ -90,12 +90,14 @@ jobs:
 
       - name: Creating rclone config
         run: |
-          mkdir -p $HOME/.config/rclone/
-          echo '[cache]' > $HOME/.config/rclone/rclone.conf
-          echo 'type = sftp' >> $HOME/.config/rclone/rclone.conf
-          echo 'host = ${{ secrets.STORAGE_HOST }}' >> $HOME/.config/rclone/rclone.conf
-          echo 'user = storage' >> $HOME/.config/rclone/rclone.conf
-          echo 'key_pem = ${{ secrets.STORAGE_KEY }}' >> $HOME/.config/rclone/rclone.conf
+          mkdir -p "$HOME/.config/rclone/"
+          {
+            echo '[cache]'
+            echo 'type = sftp'
+            echo 'host = ${{ secrets.STORAGE_HOST }}'
+            echo 'user = storage'
+            echo 'key_pem = ${{ secrets.STORAGE_KEY }}'
+          } > "$HOME/.config/rclone/rclone.conf"
 
       - name: Modifying args.gn (arm)
         if: matrix.platform == 'arm'
@@ -127,15 +129,15 @@ jobs:
         run: curl ipinfo.io
 
       - name: Downloading binary objects cache to $HOME/cache
-        run: rclone copy --transfers=128 --retries=10 cache:kiwibrowser-next-builds-${{ matrix.platform }}/ $HOME/kiwibrowser-next-builds-${{ matrix.platform }}
+        run: rclone copy --transfers=128 --retries=10 cache:kiwibrowser-next-builds-${{ matrix.platform }}/ "$HOME/kiwibrowser-next-builds-${{ matrix.platform }}"
 
       - name: Transferring build to the standard Kiwi Browser run ID
         run: rclone copy --transfers=128 --retries=10 cache:kiwibrowser-next-builds-${{ matrix.platform }}/ cache:kiwibrowser-builds/${{ github.run_id }}/${{ matrix.platform }}
 
       - name: Listing files
         run: |
-          echo $HOME
-          ls -la $HOME/kiwibrowser-next-builds-${{ matrix.platform }}
+          echo "$HOME"
+          ls -la "$HOME/kiwibrowser-next-builds-${{ matrix.platform }}"
 
       - name: Uploading APK
         uses: actions/upload-artifact@v4
@@ -153,12 +155,14 @@ jobs:
     
       - name: Creating rclone config
         run: |
-          mkdir -p $HOME/.config/rclone/
-          echo '[cache]' > $HOME/.config/rclone/rclone.conf
-          echo 'type = sftp' >> $HOME/.config/rclone/rclone.conf
-          echo 'host = ${{ secrets.STORAGE_HOST }}' >> $HOME/.config/rclone/rclone.conf
-          echo 'user = storage' >> $HOME/.config/rclone/rclone.conf
-          echo 'key_pem = ${{ secrets.STORAGE_KEY }}' >> $HOME/.config/rclone/rclone.conf
+          mkdir -p "$HOME/.config/rclone/"
+          {
+            echo '[cache]'
+            echo 'type = sftp'
+            echo 'host = ${{ secrets.STORAGE_HOST }}'
+            echo 'user = storage'
+            echo 'key_pem = ${{ secrets.STORAGE_KEY }}'
+          } > "$HOME/.config/rclone/rclone.conf"
 
 
       - name: Downloading artifact (arm)
@@ -188,8 +192,8 @@ jobs:
       - name: Listing files under $HOME
         run: |
           pwd
-          echo $HOME
-          ls -laR $HOME
+          echo "$HOME"
+          ls -laR "$HOME"
 
       - name: Prepare release notes
         run: |
@@ -364,10 +368,12 @@ jobs:
         continue-on-error: true
         if: contains(github.event.inputs.announceOnMessengers, 'yes')
         run: |
-          echo "" > commit_message.txt
-          echo "" >> commit_message.txt
-          cat ./apk-arm/last_commits.txt >> commit_message.txt
-          echo "" >> commit_message.txt
+          {
+            echo ""
+            echo ""
+            cat ./apk-arm/last_commits.txt
+            echo ""
+          } > commit_message.txt
           COMMIT_MSG=$(<./commit_message.txt)
           PAYLOAD=$(jq -n \
                       --arg username "Kiwi Builder (Next)" \
@@ -387,4 +393,3 @@ jobs:
                       --argjson reply_markup '{"inline_keyboard": [[{"text": "x86", "url": "https://github.com/kiwibrowser/src.next/releases/download/${{ github.run_id }}/com.kiwibrowser.browser-x86-${{ github.run_id }}-github.apk"},{"text": "x64", "url": "https://github.com/kiwibrowser/src.next/releases/download/${{ github.run_id }}/com.kiwibrowser.browser-x64-${{ github.run_id }}-github.apk"}],[{"text": "arm", "url": "https://github.com/kiwibrowser/src.next/releases/download/${{ github.run_id }}/com.kiwibrowser.browser-arm-${{ github.run_id }}-github.apk"},{"text": "arm64", "url": "https://github.com/kiwibrowser/src.next/releases/download/${{ github.run_id }}/com.kiwibrowser.browser-arm64-${{ github.run_id }}-github.apk"}],[{"text": ".DEV x86", "url": "https://github.com/kiwibrowser/src.next/releases/download/${{ github.run_id }}/com.kiwibrowser.browser.dev-x86-${{ github.run_id }}-github.apk"},{"text": ".DEV x64", "url": "https://github.com/kiwibrowser/src.next/releases/download/${{ github.run_id }}/com.kiwibrowser.browser.dev-x64-${{ github.run_id }}-github.apk"}],[{"text": ".DEV arm", "url": "https://github.com/kiwibrowser/src.next/releases/download/${{ github.run_id }}/com.kiwibrowser.browser.dev-arm-${{ github.run_id }}-github.apk"},{"text": ".DEV arm64", "url": "https://github.com/kiwibrowser/src.next/releases/download/${{ github.run_id }}/com.kiwibrowser.browser.dev-arm64-${{ github.run_id }}-github.apk"}]]}' \
                       '{text: $text, chat_id: $chat_id, parse_mode: $parse_mode, reply_markup: $reply_markup}')
           curl -H "Content-Type: application/json" -X POST -d "$PAYLOAD" https://api.telegram.org/bot${{ secrets.TELEGRAM_TOKEN }}/sendMessage
-
