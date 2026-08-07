@@ -28,14 +28,22 @@ jobs:
         with:
           node-version: '10.x'
 
-      - name: npm config registry
+      - name: Configure FA package
+        id: fa-package
         env:
           FONTAWESOME_NPM_AUTH_TOKEN: ${{ secrets.FONTAWESOME_NPM_AUTH_TOKEN }}
         run: |
-          npm config set "@fortawesome:registry" https://npm.fontawesome.com/
-          npm config set "//npm.fontawesome.com/:_authToken" "$FONTAWESOME_NPM_AUTH_TOKEN"
+          if [ -n "$FONTAWESOME_NPM_AUTH_TOKEN" ]; then
+            npm config set "@fortawesome:registry" https://npm.fontawesome.com/
+            npm config set "//npm.fontawesome.com/:_authToken" "$FONTAWESOME_NPM_AUTH_TOKEN"
+            echo "package=@fortawesome/fontawesome-pro@next" >> "$GITHUB_OUTPUT"
+            echo "module_path=@fortawesome/fontawesome-pro" >> "$GITHUB_OUTPUT"
+          else
+            echo "package=@fortawesome/fontawesome-free@latest" >> "$GITHUB_OUTPUT"
+            echo "module_path=@fortawesome/fontawesome-free" >> "$GITHUB_OUTPUT"
+          fi
       - name: npm install FA package
-        run: npm install --save @fortawesome/fontawesome-pro@next
+        run: npm install --save ${{ steps.fa-package.outputs.package }}
         
       - name: Install librsvg2
         run: sudo apt install librsvg2-bin
@@ -44,7 +52,7 @@ jobs:
         run: sudo apt-get install imagemagick
         
       - name: Execute Script - Replace icons with new FA ones
-        run: bash ./toolbox/icon_update_script.sh "./node_modules/@fortawesome/fontawesome-pro/svgs/${{ github.event.inputs.iconTypeFA }}/${{ github.event.inputs.iconNameFA }}.svg" "${{ github.event.inputs.fileNameInChromium }}" "${{ github.event.inputs.fillColor }}"
+        run: bash ./toolbox/icon_update_script.sh "./node_modules/${{ steps.fa-package.outputs.module_path }}/svgs/${{ github.event.inputs.iconTypeFA }}/${{ github.event.inputs.iconNameFA }}.svg" "${{ github.event.inputs.fileNameInChromium }}" "${{ github.event.inputs.fillColor }}"
       
       - name: Git Auto Commit
         uses: stefanzweifel/git-auto-commit-action@v4.11.0
